@@ -1,0 +1,71 @@
+#!/bin/bash
+
+cxx=`which ${1}`
+errcode="$?"
+if [ ${errcode} != "0" ] ; then
+cxx="unknown";
+fi
+echo "CXX: ${cxx}"
+
+cxx_ver=`${1} --version 2>&1`
+errcode="$?"
+if [ ${errcode} != "0" ] ; then
+cxx_ver=`${1} -V 2>&1`;
+errcode="$?"
+if [ ${errcode} != "0" ] ; then
+cxx_ver="unknown";
+fi
+fi
+
+cxx_ver=${cxx_ver// /@}
+cxx_version=""
+for i in $(echo ${cxx_ver});
+do
+ if [ "$cxx_version" == "" ]; then
+    cxx_version=$i;
+ fi
+done
+cxx_version=${cxx_version//@/ }
+echo "Compiler version: ${cxx_version}"
+
+cxxflags=${2}
+hostname=`uname -n`
+errcode="$?"
+if [ ${errcode} != "0" ] ; then
+hostname="unknown";
+fi
+
+kern_name=`uname -s`
+errcode="$?"
+if [ ${errcode} != "0" ] ; then
+kern_name="unknown";
+fi
+
+kern_rel=`uname -r`
+errcode="$?"
+if [ ${errcode} != "0" ] ; then
+kern_rel="unknown";
+fi
+
+proc=`uname -p`
+errcode="$?"
+if [ ${errcode} != "0" ] ; then
+proc="unknown";
+fi
+
+
+cat << END_CAT > miniFE_info.hpp
+#ifndef miniFE_info_hpp
+#define miniFE_info_hpp
+
+#define MINIFE_HOSTNAME "${hostname}"
+#define MINIFE_KERNEL_NAME "'${kern_name}'"
+#define MINIFE_KERNEL_RELEASE "'${kern_rel}'"
+#define MINIFE_PROCESSOR "'${proc}'"
+
+#define MINIFE_CXX "'${cxx}'"
+#define MINIFE_CXX_VERSION "'${cxx_version}'"
+#define MINIFE_CXXFLAGS "'${cxxflags}'"
+
+#endif
+END_CAT

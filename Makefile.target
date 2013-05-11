@@ -1,0 +1,16 @@
+#BITCODE = examples/mantevo/miniFE-1.1/miniFE.x.bc
+#BITCODE = examples/mantevo/HPCCG-1.0/test_HPCCG.bc
+#BITCODE = examples/mantevo/miniXyce_1.0/miniXyce_ref/miniXyce.x.bc
+#BITCODE = examples/tf/tf.bc
+#BITCODE = examples/octree_ZIB/cpp_src/octree.bc
+BITCODE = examples/synthetic/vector/simplecase.bc
+#BITCODE = examples/synthetic/neststrvec/simplecase.bc
+#BITCODE = examples/synthetic/map/simplecase.bc
+#BITCODE = examples/synthetic/recptr/simplecase.bc
+#BITCODE = examples/synthetic/integers/simplecase.bc
+#BITCODE = examples/synthetic/new/simplecase.bc
+#BITCODE = examples/synthetic/part_new/simplecase.bc
+#BITCODE = examples/synthetic/map/simplecase.bc
+#BITCODE = examples/synthetic/ddir/simplecase.bc
+#BITCODE = examples/synthetic/static_2darray/simplecase.bc
+#BITCODE = examples/synthetic/splitptr/simplecase.bc

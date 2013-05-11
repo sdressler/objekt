@@ -1,0 +1,49 @@
+#!/bin/bash
+
+TRILINOS_SRC=$1
+
+if [ -d "${TRILINOS_SRC}" -a -d "${TRILINOS_SRC}/packages" ] ;
+then
+
+#-----------------------------------------------------------------------
+cp -r ${TRILINOS_SRC}/packages/ThreadPool/* ThreadPool
+rm -rf ThreadPool/doc
+
+cat << END_CAT > ThreadPool/ThreadPool_config.h
+#ifndef HAVE_PTHREAD
+#define HAVE_PTHREAD
+#endif
+END_CAT
+
+#-----------------------------------------------------------------------
+cp -r ${TRILINOS_SRC}/packages/shards/* shards
+#-----------------------------------------------------------------------
+cp -r ${TRILINOS_SRC}/packages/stk/stk_util/stk_util/* stk_util
+rm stk_util/util/Identifier*
+
+cat << END_CAT > stk_util/stk_config.h
+#ifndef stk_config_h
+#define stk_config_h
+
+#define STK_PACKAGE stk
+#define STK_VERSION 0.1a
+
+#if defined(HAVE_MPI)
+#define STK_HAS_MPI
+#endif
+
+#endif /* stk_config_h */
+END_CAT
+
+#-----------------------------------------------------------------------
+rm stk_util/environment/Runtime* stk_util/environment/Program*
+#-----------------------------------------------------------------------
+cp -r ${TRILINOS_SRC}/packages/stk/stk_mesh/stk_mesh/* stk_mesh
+#-----------------------------------------------------------------------
+
+else
+
+  echo 'usage: ' $0 '<path-to-Trilinos-source>'
+
+fi
+

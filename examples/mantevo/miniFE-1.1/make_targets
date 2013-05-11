@@ -1,0 +1,63 @@
+
+OBJS = \
+	 BoxPartition.o \
+	 mytimer.o \
+	 param_utils.o \
+	 utils.o \
+	 YAML_Doc.o \
+	 YAML_Element.o \
+	 TBBNode.o
+
+MAIN_OBJ = \
+	 main.o
+
+UTEST_OBJS = \
+	 utest.o
+
+MINIFE_INFO = 1
+MINIFE_KERNELS = 0
+
+all: generate_info miniFE.x
+
+utest.x:$(OBJS) $(OPTIONAL_OBJS) $(UTEST_OBJS) *.hpp
+	 $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OBJS) $(OPTIONAL_OBJS) $(UTEST_OBJS) -o utest.x $(LDFLAGS) $(OPTIONAL_LIBS) $(LIBS)
+
+miniFE.x:$(OBJS) $(OPTIONAL_OBJS) $(MAIN_OBJ) *.hpp generate_info
+	 #$(INSTRUMENT) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OBJS) $(MAIN_OBJ) $(OPTIONAL_OBJS) -o miniFE.x $(LDFLAGS) $(OPTIONAL_LIBS) $(LIBS) -v
+	 /opt/binutils/2.23/bin/ld.gold --plugin=/opt/llvm/3.2/lib/LLVMgold.so --plugin-opt=also-emit-llvm\
+	 --build-id --no-add-needed --eh-frame-hdr --hash-style=gnu -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 \
+	 -o miniFE.x \
+	 /usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64/crt1.o \
+	 /usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64/crti.o \
+	 /usr/lib/gcc/x86_64-redhat-linux/4.7.2/crtbegin.o \
+	 -L/usr/lib/gcc/x86_64-redhat-linux/4.7.2 \
+	 -L/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64 \
+	 -L/lib/../lib64 -L/usr/lib/../lib64 \
+	 -L/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../.. \
+	$(OBJS) $(MAIN_OBJ) $(OPTIONAL_OBJS)\
+	-lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc \
+	/usr/lib/gcc/x86_64-redhat-linux/4.7.2/crtend.o \
+	 /usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64/crtn.o
+
+tf:
+	/opt/llvm/3.2/bin/llc miniFE.x.tf.bc -o miniFE.x.tf.s
+	/opt/llvm/3.2/bin/clang++ -O0 -g -Wall miniFE.x.tf.s ../../../aux/helper.cpp -o miniFE.tf.x
+
+generate_info:
+	 ./generate_info_header "$(CXX)" "$(CXXFLAGS)"
+
+verify:all
+	 ./run_tests
+
+%.o:%.cpp *.hpp
+	 $(CXX) $(CXXFLAGS) $(CPPFLAGS) -DMINIFE_INFO=$(MINIFE_INFO) -DMINIFE_KERNELS=$(MINIFE_KERNELS) -c $<
+
+%.o:%.c *.h
+	 $(CC) $(CFLAGS) $(CPPFLAGS) -c $<
+
+clean:
+	 rm -f *.o *.a *.x *.linkinfo miniFE_info.hpp
+
+realclean: clean
+	 rm -f gmon.out gprof.* *~ *.yaml *.TVD.* *.mtx* *.vec* run_utest_* minife_debug*
+

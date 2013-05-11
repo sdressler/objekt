@@ -1,0 +1,11 @@
+LLVM_ROOT = /opt/llvm/3.2
+MODULES = MicroGraph BlockProcessor DataDirection KDV
+
+LLVM_CONFIG = $(LLVM_ROOT)/bin/llvm-config
+
+CXX = $(LLVM_ROOT)/bin/clang++
+#CXX = g++
+AR = ar
+
+CXXFLAGS = -O0 -g -fPIC --std=c++11 -Wall -I$(ROOT)/include `$(LLVM_CONFIG) --cxxflags` -fexceptions
+LDFLAGS = -shared `$(LLVM_CONFIG) --ldflags` 

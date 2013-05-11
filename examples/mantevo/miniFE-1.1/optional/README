@@ -1,0 +1,6 @@
+
+shards/      is extracted from  Trilinos/packages/shards/src/
+ThreadPool/  is extracted from  Trilinos/packages/ThreadPool/src/
+stk_util/    is extracted from  Trilinos/packages/stk/stk_util/stk_util/
+stk_mesh/    is extracted from  Trilinos/packages/stk/stk_mesh/stk_mesh/
+

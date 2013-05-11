@@ -1,0 +1,30 @@
+#-----------------------------------------------------------------------
+
+OPTIONAL_DEFS = -DMINIFE_DEBUG -DMINIFE_HAVE_STK -DSKIP_DEPRECATED_STK_MESH_TOPOLOGY_HELPERS
+OPTIONAL_INCS = -I${PWD}/optional/shards -I${PWD}/optional/shards/src -I${PWD}/optional
+OPTIONAL_OBJS = libstk.a
+OPTIONAL_LIBS = -lpthread
+
+#-----------------------------------------------------------------------
+
+MINIFE_TYPES =  \
+	-DMINIFE_SCALAR=double   \
+	-DMINIFE_LOCAL_ORDINAL=int      \
+	-DMINIFE_GLOBAL_ORDINAL=int
+
+#-----------------------------------------------------------------------
+
+CFLAGS = -O3
+CXXFLAGS = -O3
+CPPFLAGS = -I. -DHAVE_MPI $(MINIFE_TYPES) $(OPTIONAL_INCS) $(OPTIONAL_DEFS)
+LDFLAGS =
+LIBS =
+
+CXX=mpicxx
+CC=mpicc
+
+# INSTRUMENT=/usr/local/rational/releases/PurifyPlus.7.0.0.0-012/i386_linux2/bin/purify -always-use-cache-dir -cache-dir=/scratch/william/purify-cache
+
+include make_targets
+include ./optional/make_targets
+

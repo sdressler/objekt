@@ -1,0 +1,21 @@
+#-----------------------------------------------------------------------
+
+MINIFE_TYPES =  \
+	-DMINIFE_SCALAR=double   \
+	-DMINIFE_LOCAL_ORDINAL=int      \
+	-DMINIFE_GLOBAL_ORDINAL=int
+
+#-----------------------------------------------------------------------
+
+CFLAGS = -emit-llvm -O0
+CXXFLAGS = -emit-llvm -O0
+CPPFLAGS = -I. $(MINIFE_TYPES)
+LDFLAGS =
+LIBS=-lm
+
+CXX=/opt/llvm/3.2/bin/clang++
+CC=/opt/llvm/3.2/bin/clang
+
+include make_targets
+include ./optional/make_targets
+
