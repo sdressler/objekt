@@ -1,6 +1,6 @@
 include ../Makefile.in
 
-TARGET = LLVMGraph
+TARGET = objekt
 
 LIBS = $(addprefix -l, $(MODULES))
 DEPS = $(addsuffix .a, $(addprefix ../lib/lib, $(MODULES)))

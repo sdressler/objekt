@@ -1,20 +1,13 @@
 include Makefile.in
 include Makefile.target
 
-TARGET = LLVMGraph.so
+TARGET = objekt.so
 
 ROOT = $(realpath .)/
 SRCDIR = src/
 
 SUBDIRS = $(addprefix $(SRCDIR),$(MODULES))
  
-#SUBDIRS = 	src/MicroGraph \#
-			#src/KDV \
-			#src/DataDirection
-			#src/BlockProcessor \
-			#src/LoopProcessor src/DataDirection
-			
-
 BUILDDIRS = build-src $(SUBDIRS:%=build-%)
 CLEANDIRS = clean-src $(SUBDIRS:%=clean-%)
 
