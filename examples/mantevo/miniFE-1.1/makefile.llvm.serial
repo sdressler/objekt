@@ -13,8 +13,8 @@ CPPFLAGS = -I. $(MINIFE_TYPES)
 LDFLAGS =
 LIBS=-lm
 
-CXX=clang++
-CC=clang
+CXX=/opt/llvm/3.2/bin/clang++
+CC=/opt/llvm/3.2/bin/clang
 
 include make_targets
 include ./optional/make_targets

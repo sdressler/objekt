@@ -20,7 +20,7 @@ public:
 
     //typedef typename std::multimap<tVertex, tVertex> tEdges;
     typedef typename std::pair<tVertex, tVertex> tEdge;
-    typedef typename std::multimap<tEdge, tEdgeProperty> tEdges;
+    typedef typename std::map<tEdge, tEdgeProperty> tEdges;
     typedef typename tEdges::iterator tEdgeIterator;
     typedef typename tEdges::const_iterator tEdgeConstIterator;
 
@@ -78,7 +78,7 @@ public:
     			std::make_pair(v1->first, v2->first),
     			tEdgeProperty()
     		)
-    	);
+    	).first;
     }
 
     //std::pair<tEdgeIterator, tEdgeIterator> outEdges(tVertex v) {

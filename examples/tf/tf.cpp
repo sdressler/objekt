@@ -14,8 +14,6 @@
 //is part of a non accepted library of boost but works for me
 #include "combination.hpp"
 
-#include "/home/bzcdress/repos/elapsd/include/elapsd/elapsd.h"
-
 using namespace std;
 
 
@@ -100,18 +98,9 @@ int main() {
 
     cout << "Total size: " << s << " Bytes\n";
 //	cout << "Total: " << 4 + genome.size() + kmer.size() + count.size() * sizeof(int) << endl;
-
-    ENHANCE::elapsd e("/home/bzcdress/repos/papers/kdv/data/europar.db", "TF");
-
-    e.addKernel(2, "TF");
-    e.addDevice(0, "CPU");
-
-    e.startTimer(2,0);
+	
     tf(k, genome,kmer, count);
-    e.stopTimer(2,0);
     
-    e.commitToDB();
-
     //print the counts for testing
     for (int i = 0; i < count.size(); i++) {
         cout << kmer[i] << ": " << count[i] << "\t";

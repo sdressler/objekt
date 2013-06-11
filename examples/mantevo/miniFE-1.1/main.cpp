@@ -80,9 +80,6 @@ extern "C" {
 #ifndef MINIFE_GLOBAL_ORDINAL
 #define MINIFE_GLOBAL_ORDINAL int
 #endif
-
-#include "/home/bzcdress/repos/elapsd/include/elapsd/elapsd.h"
-
 /*
 __attribute__((annotate("kernel")))
 void f(const int global_box[][2], int my_box[][2], SerialComputeNode& compute_node, miniFE::Parameters& params, YAML_Doc& ydoc) {
@@ -193,17 +190,8 @@ int main(int argc, char** argv) {
   //f(global_box, my_box, compute_node, params, doc);
   //f(global_box, my_box);
 
-  ENHANCE::elapsd e("/home/bzcdress/repos/papers/kdv/data/europar.db", "miniFE");
-
-  e.addKernel(1, "miniFE");
-  e.addDevice(0, "CPU");
-
-  e.startTimer(1,0);
   miniFE::driver< MINIFE_SCALAR, MINIFE_LOCAL_ORDINAL, MINIFE_GLOBAL_ORDINAL,
                   ComputeNodeType>(global_box, my_box, compute_node, params, doc);
-  e.stopTimer(1,0);
-
-  e.commitToDB();
 
   exit(0);
 
