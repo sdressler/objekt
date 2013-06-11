@@ -23,6 +23,7 @@ void KernelVolume::run() {
     Fsize->dump();
 
     for (auto it : KernelFunctions) {
+        it->dump();
         callProcessor(M, it, Fsize);
     }
     

@@ -24,7 +24,7 @@
 // USA
 // Questions? Contact Michael A. Heroux (maherou@sandia.gov) 
 // 
-// ************************************************************************
+#// ************************************************************************
 //@HEADER
 
 // Changelog
@@ -84,6 +84,8 @@ using std::endl;
 
 #include "YAML_Element.hpp"
 #include "YAML_Doc.hpp"
+
+#include "/home/bzcdress/repos/elapsd/include/elapsd/elapsd.h"
 
 #undef DEBUG
 /*
@@ -181,11 +183,18 @@ int main(int argc, char *argv[])
 
   std::cout << "MEASURED:  " << A->size() + 2 * sizeof(int) + 2 * sizeof(double) + 7 * sizeof(double);
   std::cout << " Bytes\n";
+  
+  ENHANCE::elapsd e("/home/bzcdress/repos/papers/kdv/data/europar.db", "HPCCG KDV Test");
+  e.addKernel(0, "HPCCG");
+  e.addDevice(0, "CPU");
 
-//  f(A, b, x, times);
-//  exit(0);
+  e.startTimer(0,0);
 
   ierr = HPCCG( A, b, x, max_iter, tolerance, niters, normr, times);
+
+  e.stopTimer(0,0);
+
+  e.commitToDB();
   
   exit(0);
 

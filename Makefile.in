@@ -1,5 +1,5 @@
-LLVM_ROOT = /opt/llvm/3.2
-MODULES = MicroGraph BlockProcessor DataDirection KDV
+LLVM_ROOT = /usr
+MODULES = MicroGraph DataDirection KDV
 
 LLVM_CONFIG = $(LLVM_ROOT)/bin/llvm-config
 

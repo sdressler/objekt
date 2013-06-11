@@ -11,8 +11,6 @@ void KernelVolume::callProcessor(Module *M, Function *kernelF, Function *printF)
     // Check if the former User is an invoke or call
     auto *p = kernelF->use_back();
 
-    //p->dump();
-
     if (CallInst::classof(p) || InvokeInst::classof(p)) {
         
         //auto *ci = cast<CallInst>(p);
@@ -77,6 +75,8 @@ void KernelVolume::callProcessor(Module *M, Function *kernelF, Function *printF)
 
         	BTH->destroyVG();
 
+            llvm::errs() << "ASF Map Insert\n";
+
         	ASF_Map.insert(std::make_pair(
         	    (*e)->second.value,
         	    std::make_pair(size_F, isOutput)
@@ -104,10 +104,10 @@ void KernelVolume::callProcessor(Module *M, Function *kernelF, Function *printF)
             Function *size_F   = sfmap.second.first;
             bool      isOutput = sfmap.second.second;
 
+            size_F->dump();
+
             // If arguments type is not a pointer, create one
             if (!arg->getType()->isPointerTy()) {
-
-            	llvm::errs() << "Test\n";
 
                 // Create storage
                 auto *arg_alloca = builder.CreateAlloca(arg->getType(), 0);

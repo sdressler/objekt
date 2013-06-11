@@ -36,8 +36,8 @@
 
 #//CXX=/usr/local/bin/g++
 #LINKER=/usr/local/bin/g++
-CXX    = /opt/llvm/3.2/bin/clang++
-LINKER = /opt/llvm/3.2/bin/clang++
+CXX    = clang++
+LINKER = clang++
 #CXX=mpicxx
 #LINKER=mpicxx
 
@@ -119,12 +119,14 @@ TEST_CPP = main.cpp generate_matrix.cpp read_HPC_row.cpp \
 TEST_OBJ          = $(TEST_CPP:.cpp=.o)
 
 $(TARGET): $(TEST_OBJ)
-	/opt/binutils/2.23/bin/ld.gold --eh-frame-hdr -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o test_HPCCG /usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64/crt1.o /usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64/crti.o /usr/lib/gcc/x86_64-redhat-linux/4.7.2/crtbegin.o -L/usr/lib/gcc/x86_64-redhat-linux/4.7.2 -L/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../.. -L/lib -L/usr/lib main.o generate_matrix.o read_HPC_row.o compute_residual.o mytimer.o dump_matlab_matrix.o HPC_sparsemv.o HPCCG.o waxpby.o ddot.o make_local_matrix.o exchange_externals.o YAML_Element.o YAML_Doc.o -lm -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-redhat-linux/4.7.2/crtend.o /usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64/crtn.o --plugin=/opt/llvm/3.2/lib/LLVMgold.so --plugin-opt=also-emit-llvm
-#$(LINKER) -v $(OMP_FLAGS) $(TEST_OBJ) $(LIB_PATHS) -o $(TARGET)
+	ld.gold --eh-frame-hdr -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o test_HPCCG /usr/lib64/gcc/x86_64-unknown-linux-gnu/4.8.1/../../../../lib64/crt1.o /usr/lib64/gcc/x86_64-unknown-linux-gnu/4.8.1/../../../../lib64/crti.o /usr/lib64/gcc/x86_64-unknown-linux-gnu/4.8.1/crtbegin.o -L/usr/lib64/gcc/x86_64-unknown-linux-gnu/4.8.1 -L/usr/lib64/gcc/x86_64-unknown-linux-gnu/4.8.1/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/usr/lib64/gcc/x86_64-unknown-linux-gnu/4.8.1/../../.. -L/lib -L/usr/lib main.o generate_matrix.o read_HPC_row.o compute_residual.o mytimer.o dump_matlab_matrix.o HPC_sparsemv.o HPCCG.o waxpby.o ddot.o make_local_matrix.o exchange_externals.o YAML_Element.o YAML_Doc.o -lm -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib64/gcc/x86_64-unknown-linux-gnu/4.8.1/crtend.o /usr/lib64/gcc/x86_64-unknown-linux-gnu/4.8.1/../../../../lib64/crtn.o --plugin=/usr/lib/llvm/LLVMgold.so --plugin-opt=also-emit-llvm -L/home/bzcdress/repos/elapsd/lib -lelapsd
+
+#	ld.gold --eh-frame-hdr -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o test_HPCCG /usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64/crt1.o /usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64/crti.o /usr/lib/gcc/x86_64-redhat-linux/4.7.2/crtbegin.o -L/usr/lib/gcc/x86_64-redhat-linux/4.7.2  -L/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../.. -L/lib -L/usr/lib main.o generate_matrix.o read_HPC_row.o  compute_residual.o mytimer.o dump_matlab_matrix.o HPC_sparsemv.o HPCCG.o waxpby.o ddot.o make_local_matrix.o exchange_externals.o YAML_Element.o YAML_Doc.o -lm -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s  -lgcc /usr/lib/gcc/x86_64-redhat-linux/4.7.2/crtend.o /usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64/crtn.o --plugin=/usr/lib/llvm/LLVMgold.so --plugin-opt=also-emit-llvm
+#	$(LINKER) -v $(OMP_FLAGS) $(TEST_OBJ) $(LIB_PATHS) -o $(TARGET)
 
 tf:
-	/opt/llvm/3.2/bin/llc test_HPCCG.tf.bc -o test_HPCCG.tf.s
-	/opt/llvm/3.2/bin/clang++ -O0 -g -Wall test_HPCCG.tf.s ../../../aux/helper.cpp -o test_HPCCG.tf.x
+	llc test_HPCCG.tf.bc -o test_HPCCG.tf.s
+	clang++ -O0 -g -Wall test_HPCCG.tf.s ../../../aux/helper.cpp -o test_HPCCG.tf.x -L/home/bzcdress/repos/elapsd/lib -lelapsd
 
 test:
 	@echo "Not implemented yet..."
