@@ -11,8 +11,6 @@ void KernelVolume::callProcessor(Module *M, Function *kernelF, Function *printF)
     // Check if the former User is an invoke or call
     auto *p = kernelF->use_back();
 
-    //p->dump();
-
     if (CallInst::classof(p) || InvokeInst::classof(p)) {
         
         //auto *ci = cast<CallInst>(p);
@@ -106,8 +104,6 @@ void KernelVolume::callProcessor(Module *M, Function *kernelF, Function *printF)
 
             // If arguments type is not a pointer, create one
             if (!arg->getType()->isPointerTy()) {
-
-            	llvm::errs() << "Test\n";
 
                 // Create storage
                 auto *arg_alloca = builder.CreateAlloca(arg->getType(), 0);

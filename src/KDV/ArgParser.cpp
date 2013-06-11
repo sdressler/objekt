@@ -25,7 +25,7 @@ void ArgParser::performArgumentAnalysis(llvm::Instruction *I, const std::string 
 
     //for (auto arg = F->arg_begin(); arg != F->arg_end(); ++arg) {
     //for (unsigned int )
-    for (auto arg = CS.arg_begin() + 1; arg != CS.arg_end(); ++arg) {
+    for (auto arg = CS.arg_begin(); arg != CS.arg_end(); ++arg) {
         
         errs() << "Processing: "; (*arg)->dump();
 
